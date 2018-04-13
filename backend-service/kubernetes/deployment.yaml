@@ -1,0 +1,65 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  labels:
+    app: backend-service
+    group: escoffier.me.chaos
+  name: backend-service
+spec:
+  replicas: 2
+  selector:
+    app: backend-service
+    group: escoffier.me.chaos
+  template:
+    metadata:
+      labels:
+        app: backend-service
+        group: escoffier.me.chaos
+    spec:
+      containers:
+        - env:
+            - name: KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+          image: ''
+          imagePullPolicy: IfNotPresent
+          name: vertx
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+            - containerPort: 8778
+              name: jolokia
+              protocol: TCP
+          readinessProbe:
+              failureThreshold: 3
+              httpGet:
+                path: /health
+                port: 8080
+                scheme: HTTP
+              initialDelaySeconds: 5
+              periodSeconds: 10
+              successThreshold: 1
+              timeoutSeconds: 1
+          livenessProbe:
+              failureThreshold: 3
+              httpGet:
+                path: /health
+                port: 8080
+                scheme: HTTP
+              initialDelaySeconds: 10
+              periodSeconds: 2
+              successThreshold: 1
+              timeoutSeconds: 1
+  triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+          - vertx
+        from:
+          kind: ImageStreamTag
+          name: 'backend-service:latest'
+      type: ImageChange
