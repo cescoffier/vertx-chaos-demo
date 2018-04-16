@@ -6,7 +6,7 @@ metadata:
     group: escoffier.me.chaos
   name: backend-service
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     app: backend-service
     group: escoffier.me.chaos

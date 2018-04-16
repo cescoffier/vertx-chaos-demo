@@ -3,8 +3,10 @@ package me.escoffier.chaos.api;
 import io.vertx.circuitbreaker.CircuitBreakerOptions;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.client.WebClientOptions;
+import io.vertx.reactivex.RxHelper;
 import io.vertx.reactivex.circuitbreaker.CircuitBreaker;
 import io.vertx.reactivex.core.AbstractVerticle;
+import io.vertx.reactivex.core.Context;
 import io.vertx.reactivex.ext.web.Router;
 import io.vertx.reactivex.ext.web.RoutingContext;
 import io.vertx.reactivex.ext.web.client.HttpResponse;
@@ -24,6 +26,7 @@ public class APIVerticle extends AbstractVerticle {
                 .setMaxFailures(3)
                 .setResetTimeout(5000)
                 .setTimeout(1000)
+                .setMaxRetries(3)
         );
 
         Router router = Router.router(vertx);

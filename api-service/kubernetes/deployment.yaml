@@ -6,7 +6,7 @@ metadata:
     group: escoffier.me.chaos
   name: api-service
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     app: api-service
     group: escoffier.me.chaos
