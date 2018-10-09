@@ -1,4 +1,4 @@
-FROM redhat-openjdk-18/openjdk18-openshift:1.3-4
+FROM registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift
 
 EXPOSE 8080
 
