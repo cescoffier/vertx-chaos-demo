@@ -4,3 +4,4 @@ target
 .settings
 .vscode
 .vertx
+openshift.local.clusterup

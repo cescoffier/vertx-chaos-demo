@@ -17,6 +17,9 @@ import java.util.Collections;
 public class BackendVerticle extends AbstractVerticle {
 
 
+    private static final String USER = "user";
+    private static final String USER_PWD = "password";
+
     private CircuitBreaker circuit;
     private MongoClient client;
 
@@ -37,8 +40,8 @@ public class BackendVerticle extends AbstractVerticle {
         client = MongoClient.createNonShared(vertx, new JsonObject()
             .put("connection_string", "mongodb://my-mongo.vertx-chaos-demo.svc:27017")
             .put("db_name", "chaos")
-            .put("username", "user")
-            .put("password", "password"));
+            .put("username", USER)
+            .put("password", USER_PWD));
 
         Completable prepareDatabase = prepare();
 
@@ -51,7 +54,7 @@ public class BackendVerticle extends AbstractVerticle {
             ).subscribe(CompletableHelper.toObserver(future));
     }
 
-    private final static String COLLECTION_NAME = "movies";
+    private static final String COLLECTION_NAME = "movies";
 
     private Completable prepare() {
         return client.rxGetCollections()
